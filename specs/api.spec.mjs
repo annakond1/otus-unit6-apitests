@@ -18,6 +18,7 @@
 //})
 
 //Post ошибка пользователь уже существует 
+//Выгрузка из Посман
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -38,7 +39,28 @@ fetch("https://bookstore.demoqa.com/Account/v1/User", requestOptions)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 
-  //POST ошибка не корректный пароль
+  //тест с использованием fetch
+  //describe('Post ошибка пользователь уже существует', () => {
+    //it('Post ошибка пользователь уже существует', 
+    ;(async () => {
+      const response = await fetch('https://bookstore.demoqa.com/Account/v1/User', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+        userName: "Anna@",
+        password: "Anna@1234"
+      })
+    })
+    const data = await response.json()
+    
+    expect(response.status).toEqual(406)
+    expect (data.token).toBeDefined('Not Acceptable')
+    expect (data.result).toBe('ошибка пользователь уже существует')
+  })
+      //expect (data.result).toBe('ошибка пользователь уже существует')
+      
+  //POST ошибка некорректный пароль
+  //Выгрузка из Посман
   const myHeaders1 = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -59,7 +81,26 @@ fetch("https://bookstore.demoqa.com/Account/v1/User", requestOptions)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 
+  //Тест и использованием fetch
+  //POST ошибка некорректный пароль
+  ;(async () => {
+    const response = await fetch('https://bookstore.demoqa.com/Account/v1/User', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+      userName: "Anna@123456",
+      password: "anna"
+    })
+  })
+  const data = await response.json()
+  
+  expect(response.status).toEqual(400)
+  expect (data.token).toBeDefined('Bad Request')
+  expect (data.result).toBe('ошибка некорректный пароль пользователя')
+})
+
   //Post успешная генерация токена
+  //Выгрузка из Постам
   const myHeaders2 = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -80,7 +121,26 @@ fetch("https://bookstore.demoqa.com/Account/v1/GenerateToken", requestOptions)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 
+  //Fetch
+  //Post успешная генерация токена 
+  ;(async () => {
+    const response = await fetch('https://bookstore.demoqa.com/Account/v1/GenerateToken', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+      userName: "Anna@",
+      password: "Anna@123"
+    })
+  })
+  const data = await response.json()
+  
+  expect(response.status).toEqual(200)
+  expect (data.token).toBeDefined('OK')
+  expect (data.result).toBe('успешная генерация токена')
+})
+
   //Post ошибочная генерация токена
+  //Выгрузка из Посман
   const myHeaders3 = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -101,7 +161,26 @@ fetch("https://bookstore.demoqa.com/Account/v1/GenerateToken", requestOptions)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 
+  //Post ошибочная генерация токена
+  //Fetch
+  ;(async () => {
+    const response = await fetch('https://bookstore.demoqa.com/Account/v1/GenerateToken', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+      userName: "Anna@123",
+      password: ""
+    })
+  })
+  const data = await response.json()
+  
+  expect(response.status).toEqual(400)
+  expect (data.token).toBeDefined('Bad Request')
+  expect (data.result).toBe('ошибочная генерация токена')
+})
+
   //Post успешный новый пользователь
+  //Выгрузка из Посман
   const myHeaders4 = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -121,3 +200,21 @@ fetch("https://bookstore.demoqa.com/Account/v1/User", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
+
+  //Post успешный новый пользователь
+  //Fetch
+  ;(async () => {
+    const response = await fetch('https://bookstore.demoqa.com/Account/v1/User', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+      userName: "Anna@@",
+      password: "Anna@123"
+    })
+  })
+  const data = await response.json()
+  
+  expect(response.status).toEqual(406)
+  expect (data.token).toBeDefined('Not Acceptable')
+  expect (data.result).toBe('успешный новый пользователь')
+})
